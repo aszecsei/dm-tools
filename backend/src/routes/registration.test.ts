@@ -8,9 +8,15 @@ describe("Registration", () => {
   let server: Hapi.Server
 
   beforeAll(async () => {
+    process.env.JWTSECRET = "secret"
     server = new Hapi.Server()
     server.route(registration.RegistrationRoute)
     await server.start()
+  })
+
+  beforeEach(async () => {
+    mockingoose.resetAll()
+    jest.clearAllMocks()
   })
 
   afterAll(async () => {
@@ -63,7 +69,6 @@ describe("Registration", () => {
       },
     }
     const response = await server.inject(injectOptions)
-    expect(response.statusCode).toEqual(200)
-    expect(response.payload).toEqual(JSON.stringify(_doc))
+    expect(response.statusCode).toEqual(201)
   })
 })

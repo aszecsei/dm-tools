@@ -17,6 +17,8 @@
     "dotenv": "^7.0.0",
     "hapi": "^18.1.0",
     "hapi-auth-jwt2": "^8.3.0",
+    "hapi-swaggered": "^3.0.2",
+    "hapi-swaggered-ui": "^3.0.2",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.21"
