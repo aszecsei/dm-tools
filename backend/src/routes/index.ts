@@ -1,7 +1,5 @@
 import * as Hapi from "hapi"
 
-import { User } from "../schema"
-
 import { RegistrationRoute } from "./registration"
 
 export function getRoutes(): Hapi.ServerRoute[] {
@@ -11,7 +9,7 @@ export function getRoutes(): Hapi.ServerRoute[] {
       path: "/",
       options: { auth: false },
       handler: async request => {
-        return await User.find()
+        return "Hello, world"
       },
     },
     RegistrationRoute,

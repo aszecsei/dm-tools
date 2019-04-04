@@ -22,15 +22,26 @@ export async function initServer() {
   Server.route(routes.getRoutes())
 }
 
-async function validate(decoded: any, request: any) {
+export async function validate(decoded: any, request: any) {
   return { isValid: true }
 }
 
+process.on("unhandledRejection", err => {
+  console.error(err)
+  process.exit(1)
+})
+
 export async function init() {
+  await initServer()
+  await Server.initialize()
+  return Server
+}
+
+export async function start() {
   await initServer()
 
   // Start mongoose
-  mongoose.connect(
+  await mongoose.connect(
     process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb",
     {
       useNewUrlParser: true,
@@ -40,20 +51,9 @@ export async function init() {
       },
     }
   )
-
-  const db = mongoose.connection
-  db.on("error", console.error.bind(console, "connection error:"))
-  db.once("open", () => {
-    console.log(`Connected to database`)
-  })
+  console.log(`Connected to database`)
 
   await Server.start()
   console.log(`Server running at: ${Server.info.uri}`)
+  return Server
 }
-
-process.on("unhandledRejection", err => {
-  console.error(err)
-  process.exit(1)
-})
-
-init()
