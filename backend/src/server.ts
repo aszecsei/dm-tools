@@ -6,6 +6,7 @@ import * as JWTHapi from "hapi-auth-jwt2"
 import mongoose = require("mongoose")
 
 import * as routes from "./routes"
+import { User } from "./schema"
 
 export const Server = new Hapi.Server({
   host: "0.0.0.0",
@@ -23,7 +24,12 @@ export async function initServer() {
 }
 
 export async function validate(decoded: any, request: any) {
-  return { isValid: true }
+  const user = await User.findById(decoded.id)
+  if (!user) {
+    return { isValid: false }
+  } else {
+    return { isValid: true }
+  }
 }
 
 process.on("unhandledRejection", err => {
@@ -41,7 +47,7 @@ export async function start() {
   await initServer()
 
   // Start mongoose
-  await mongoose.connect(
+  mongoose.connect(
     process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb",
     {
       useNewUrlParser: true,
@@ -51,7 +57,11 @@ export async function start() {
       },
     }
   )
-  console.log(`Connected to database`)
+  const db = mongoose.connection
+  db.on("error", console.error.bind(console, "connection error:"))
+  db.once("open", () => {
+    console.log(`Connected to database`)
+  })
 
   await Server.start()
   console.log(`Server running at: ${Server.info.uri}`)
