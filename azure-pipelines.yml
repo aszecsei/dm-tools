@@ -25,11 +25,3 @@ steps:
       npm run build
     workingDirectory: "$(Build.SourcesDirectory)/backend"
     displayName: "build"
-
-  - task: AzureRmWebAppDeployment@3
-    inputs:
-      azureSubscription: "azure_connection"
-      WebAppName: "dm-tools"
-      Package: "$(Build.SourcesDirectory)/backend"
-      GenerateWebConfig: true
-      WebConfigParameters: "-Handler iisnode -NodeStartFile build/server.js -appType node"
