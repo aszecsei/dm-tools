@@ -13,5 +13,11 @@ describe("Routes", () => {
       const indexRoute = result.find(val => val.path === "/register")
       expect(indexRoute).toBeDefined()
     })
+
+    it("should have login", () => {
+      const result = index.getRoutes()
+      const indexRoute = result.find(val => val.path === "/login")
+      expect(indexRoute).toBeDefined()
+    })
   })
 })
