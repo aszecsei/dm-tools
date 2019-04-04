@@ -4,32 +4,32 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+  - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: "Ubuntu-16.04"
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "10.x"
+    displayName: "Install Node.js"
 
-- script: |
-    npm install
-    npm test
-  workingDirectory: '$(Agent.BuildDirectory)\\backend'
-  displayName: 'npm install and test'
+  - script: |
+      npm install
+      npm test
+    workingDirectory: "$(Agent.BuildDirectory)/backend"
+    displayName: "npm install and test"
 
-- script: |
-    npm run build
-  workingDirectory: '$(Agent.BuildDirectory)\\backend'
-  displayName: 'build'
+  - script: |
+      npm run build
+    workingDirectory: "$(Agent.BuildDirectory)/backend"
+    displayName: "build"
 
-- task: AzureRmWebAppDeployment@3
-  inputs:
-    azureSubscription: 'azure_connection'
-    WebAppName: 'dm-tools'
-    Package: '$(System.DefaultWorkingDirectory)\\backend'
-    GenerateWebConfig: true
-    WebConfigParameters: '-Handler iisnode -NodeStartFile build/server.js -appType node'
+  - task: AzureRmWebAppDeployment@3
+    inputs:
+      azureSubscription: "azure_connection"
+      WebAppName: "dm-tools"
+      Package: "$(System.DefaultWorkingDirectory)/backend"
+      GenerateWebConfig: true
+      WebConfigParameters: "-Handler iisnode -NodeStartFile build/server.js -appType node"
