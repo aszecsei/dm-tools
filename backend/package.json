@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/server.ts",
+    "build": "tsc",
     "lint": "tslint",
     "test": "jest --passWithNoTests --coverage --detectOpenHandles"
   },
