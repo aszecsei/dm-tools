@@ -25,3 +25,11 @@ steps:
       npm run build
     workingDirectory: "$(Build.SourcesDirectory)/backend"
     displayName: "build"
+
+  # Publish Code Coverage Results
+  # Publish Cobertura or JaCoCo code coverage results from a build
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: "cobertura" # Options: cobertura, jaCoCo
+      summaryFileLocation: "$(Build.SourcesDirectory)/**/coverage/cobertura-coverage.xml"
+      reportDirectory: "$(Build.SourcesDirectory)/**/coverage/lcov-report"
