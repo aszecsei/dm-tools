@@ -1,0 +1,12 @@
+{
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rules": {
+    "no-trailing-whitespace": true,
+    "indent": [true, "spaces"],
+    "semicolon": false,
+    "trailing-comma": true,
+    "no-magic-numbers": [true, -1, 0, 1, 2],
+    "no-console": false,
+    "object-literal-sort-keys": false
+  }
+}
