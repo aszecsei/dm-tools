@@ -1,8 +1,9 @@
 import * as Hapi from "hapi"
+import * as HttpStatusCodes from "http-status-codes"
 import mockingoose from "mockingoose"
 
-import * as login from "./login"
 import { User } from "../schema/index"
+import * as login from "./login"
 
 describe("Login", () => {
   let server: Hapi.Server
@@ -37,15 +38,15 @@ describe("Login", () => {
       },
     }
     const response = await server.inject(injectOptions)
-    expect(response.statusCode).toEqual(400)
+    expect(response.statusCode).toEqual(HttpStatusCodes.BAD_REQUEST)
   })
 
   it("should accept valid emails and passwords", async () => {
-    const _doc = await User.create({
+    const doc = await User.create({
       email: "user@domain.com",
       password: User.generateHash("thisisatestpassword"),
     })
-    mockingoose(User).toReturn(_doc, "findOne")
+    mockingoose(User).toReturn(doc, "findOne")
 
     const injectOptions = {
       method: "POST",
@@ -56,7 +57,7 @@ describe("Login", () => {
       },
     }
     const response = await server.inject(injectOptions)
-    expect(response.statusCode).toEqual(200)
+    expect(response.statusCode).toEqual(HttpStatusCodes.OK)
   })
 
   it("should not allow invalid emails", async () => {
@@ -70,15 +71,15 @@ describe("Login", () => {
       },
     }
     const response = await server.inject(injectOptions)
-    expect(response.statusCode).toEqual(401)
+    expect(response.statusCode).toEqual(HttpStatusCodes.UNAUTHORIZED)
   })
 
   it("should not accept invalid passwords", async () => {
-    const _doc = await User.create({
+    const doc = await User.create({
       email: "user@domain.com",
       password: User.generateHash("thisisatestpassword"),
     })
-    mockingoose(User).toReturn(_doc, "findOne")
+    mockingoose(User).toReturn(doc, "findOne")
 
     const injectOptions = {
       method: "POST",
@@ -89,6 +90,6 @@ describe("Login", () => {
       },
     }
     const response = await server.inject(injectOptions)
-    expect(response.statusCode).toEqual(401)
+    expect(response.statusCode).toEqual(HttpStatusCodes.UNAUTHORIZED)
   })
 })

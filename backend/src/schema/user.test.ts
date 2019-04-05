@@ -22,4 +22,14 @@ describe("User Schema", () => {
     })
     expect(doc.isPasswordValid("thisisanotherpassword")).toBeFalsy()
   })
+
+  it("should remove the password when JSON-ifying user data", async () => {
+    const doc = await User.create({
+      email: "user@domain.com",
+      password: User.generateHash("thisisatestpassword"),
+    })
+    const jsonString = JSON.stringify(doc)
+    const jsonObject = JSON.parse(jsonString)
+    expect(jsonObject.password).toBeUndefined()
+  })
 })

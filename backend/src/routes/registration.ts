@@ -1,5 +1,6 @@
 import Boom from "boom"
 import * as Hapi from "hapi"
+import * as HttpStatusCodes from "http-status-codes"
 import * as Joi from "joi"
 import * as JWT from "jsonwebtoken"
 
@@ -25,7 +26,7 @@ export async function registrationHandler(
   h: Hapi.ResponseToolkit
 ) {
   if (!process.env.JWTSECRET) {
-    throw Boom.badImplementation("Unable to sign JWT")
+    return Boom.badImplementation("Unable to sign JWT")
   }
   const userData = request.payload as IUserData
   try {
@@ -38,13 +39,16 @@ export async function registrationHandler(
     return h
       .response({ text: "You have been registered" })
       .header("Authorization", token)
-      .code(201)
+      .code(HttpStatusCodes.CREATED)
   } catch (err) {
-    if (err.code === 11000) {
-      return h
-        .response({ error: "This email address is already registered." })
-        .code(200)
+    if (err instanceof Error) {
+      if (err.message.indexOf("duplicate key error") !== -1) {
+        return h
+          .response({ error: "This email address is already registered." })
+          .code(HttpStatusCodes.OK)
+      }
     }
+    throw err
   }
 }
 

@@ -1,7 +1,7 @@
 import * as Hapi from "hapi"
 
-import { RegistrationRoute } from "./registration"
 import { LoginRoute } from "./login"
+import { RegistrationRoute } from "./registration"
 
 export function getRoutes(): Hapi.ServerRoute[] {
   return [

@@ -1,5 +1,6 @@
 import Boom from "boom"
 import * as Hapi from "hapi"
+import * as HttpStatusCodes from "http-status-codes"
 import * as Joi from "joi"
 import * as JWT from "jsonwebtoken"
 
@@ -37,7 +38,7 @@ export async function loginHandler(
   return h
     .response({ text: "You have been authenticated" })
     .header("Authorization", token)
-    .code(200)
+    .code(HttpStatusCodes.OK)
 }
 
 export const LoginRoute: Hapi.ServerRoute = {

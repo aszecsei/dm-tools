@@ -1,7 +1,8 @@
 import * as Hapi from "hapi"
+import * as HttpStatusCodes from "http-status-codes"
 import mockingoose from "mockingoose"
-import { init, validate } from "./server"
 import { User } from "./schema"
+import { init, validate } from "./server"
 
 describe("Server", () => {
   let server: Hapi.Server
@@ -20,15 +21,15 @@ describe("Server", () => {
       method: "GET",
       url: "/",
     })
-    expect(response.statusCode).toEqual(200)
+    expect(response.statusCode).toEqual(HttpStatusCodes.OK)
   })
 
   it("should validate authentication", async () => {
-    const _doc = {
+    const doc = {
       _id: "507f191e810c19729de860ea",
       email: "user@domain.com",
     }
-    mockingoose(User).toReturn(_doc, "findOne")
+    mockingoose(User).toReturn(doc, "findOne")
     const response = await validate({ id: "507f191e810c19729de860ea" }, {})
     expect(response.isValid).toBeTruthy()
   })
