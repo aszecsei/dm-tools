@@ -1,5 +1,6 @@
 import * as Hapi from "hapi"
 
+import { GetCampaignsRoute } from "./campaigns"
 import { LoginRoute } from "./login"
 import { RegistrationRoute } from "./registration"
 
@@ -15,5 +16,7 @@ export function getRoutes(): Hapi.ServerRoute[] {
     },
     RegistrationRoute,
     LoginRoute,
+
+    GetCampaignsRoute,
   ]
 }

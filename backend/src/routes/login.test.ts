@@ -12,7 +12,7 @@ describe("Login", () => {
     process.env.JWTSECRET = "secret"
     server = new Hapi.Server()
     server.route(login.LoginRoute)
-    await server.start()
+    await server.initialize()
   })
 
   afterAll(async () => {

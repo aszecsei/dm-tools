@@ -11,7 +11,7 @@ describe("Registration", () => {
   beforeAll(async () => {
     server = new Hapi.Server()
     server.route(registration.RegistrationRoute)
-    await server.start()
+    await server.initialize()
   })
 
   beforeEach(async () => {
